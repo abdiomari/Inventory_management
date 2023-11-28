@@ -1,5 +1,6 @@
 {% extends 'layout/master.html' %}
 {% load static %}
+{% load humanize %}
 
 
 {% block content %}
@@ -12,7 +13,6 @@
             </div>
         </div>
         <!-- Spinner End -->
-
 
         <!-- Content Start -->
         <div class="content">
@@ -60,25 +60,87 @@
             <!-- Sale & Revenue End -->
 
 
-            <!-- Sales Chart Start -->
+            <!-- Products Chart Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-secondary text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Worldwide Sales</h6>
-                                <a href="">Show All</a>
-                            </div>
-                            <canvas id="worldwide-sales"></canvas>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-xl-6">
-                        <div class="bg-secondary text-center rounded p-4">
-                            <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">Salse & Revenue</h6>
-                                <a href="">Show All</a>
-                            </div>
-                            <canvas id="salse-revenue"></canvas>
+                    <div class="px-4">
+                         <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Products View</h6>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+
+                                        <th scope="col">Product Name</th>
+                                        <th scope="col">Product Category</th>
+                                        <th scope="col">Product Price</th>
+                                        <th scope="col">Product Quantity</th>
+                                        <th scope="col">Updated_at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in products %}
+                                    <tr>
+                                        <td>{{ product.productCode }}</td>
+                                        <td>{{ product.productName }}</td>
+                                        <td>{{ product.productCategory }}</td>
+                                        <td>{{ product.productPrice }}</td>
+                                        <td>{{ product.productQuantity }}</td>
+                                        <td>{{ product.updated_at }}</td>
+
+                                        {% if perms.inventory_app.delete_product %}
+                                            <td>
+                                                <a href="{% url 'delete_product' product.id %}"
+                                                   class="btn btn-danger w-100">Delete</a>
+                                            </td>
+                                        {% endif %}
+
+                                    {% if perms.inventory_app.change_product %}
+                                            <td>
+                                                <a href="{% url 'product_details' product.id %}"
+                                                   class="btn btn-danger w-100">Update</a>
+                                            </td>
+                                        {% endif %}
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+
+
+{#                                start pagination #}
+                         <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        {% if products.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href='?page=
+                                        {{ products.previous_page_number }}'>Previous</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href='' tabindex="-1" aria-disabled="True">Previous</a>
+                            </li>
+                        {% endif %}
+                           <li class="page-item disabled">
+                                <a class="page-link" href='' tabindex="-1"
+                                   aria-disabled="True">{{ products.number }} of
+                                    {{ products.paginator.num_pages }}</a>
+                            </li>
+                        {% if products.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href='?page=
+                                {{ products.next_page_number }}'>Next</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href='' tabindex="-1" aria-disabled="True">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+{#                         end pagination#}
+
+
                         </div>
                     </div>
                 </div>
@@ -90,69 +152,34 @@
             <div class="container-fluid pt-4 px-4">
                 <div class="bg-secondary text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
-                        <h6 class="mb-0">Recent Salse</h6>
-                        <a href="">Show All</a>
+                        <h6 class="mb-0">Transactions</h6>
+                        <a href="{% url 'view_order' %}">Show All</a>
                     </div>
                     <div class="table-responsive">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
                                 <tr class="text-white">
                                     <th scope="col"><input class="form-check-input" type="checkbox"></th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Invoice</th>
-                                    <th scope="col">Customer</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Type</th>
                                     <th scope="col">Amount</th>
-                                    <th scope="col">Status</th>
+                                    <th scope="col">Date</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
+                            {% for transaction in transactions %}
                             <tbody>
                                 <tr>
                                     <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
+                                    <td>{{ transaction.product }}</td>
+                                    <td>{{ transaction.transaction_type }}</td>
+                                    <td>{{ transaction.amount }}</td>
+                                    <td>{{ transaction.updated_at }}</td>
+                                    <td><a class="btn btn-sm btn-primary" href="">Done</a></td>
                                 </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
-                                <tr>
-                                    <td><input class="form-check-input" type="checkbox"></td>
-                                    <td>01 Jan 2045</td>
-                                    <td>INV-0123</td>
-                                    <td>Jhon Doe</td>
-                                    <td>$123</td>
-                                    <td>Paid</td>
-                                    <td><a class="btn btn-sm btn-primary" href="">Detail</a></td>
-                                </tr>
+
                             </tbody>
+                            {% endfor %}
                         </table>
                     </div>
                 </div>
@@ -166,49 +193,30 @@
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 bg-secondary rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-2">
-                                <h6 class="mb-0">Messages</h6>
-                                <a href="">Show All</a>
+                                <h6 class="mb-0">Suppliers</h6>
+                                <a href="{% url 'view_suppliers' %}">Show All</a>
                             </div>
+
+
                             <div class="d-flex align-items-center border-bottom py-3">
-                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
+{#                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">#}
                                 <div class="w-100 ms-3">
+                                     {% for supplier in suppliers %}
                                     <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
+                                        <h6 class="mb-0">{{ supplier.name }}</h6>
+                                        <small>
+                                            {{ supplier.email }} <br>
+                                            contact : {{ supplier.contact }}
+                                        </small>
                                     </div>
-                                    <span>Short message goes here...</span>
+                                         <span>{{ supplier.created_at  }}</span>
+                                         <hr>
+                                       {% endfor %}
                                 </div>
                             </div>
-                            <div class="d-flex align-items-center border-bottom py-3">
-                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                    <span>Short message goes here...</span>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom py-3">
-                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                    <span>Short message goes here...</span>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center pt-3">
-                                <img class="rounded-circle flex-shrink-0" src="img/user.jpg" alt="" style="width: 40px; height: 40px;">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 justify-content-between">
-                                        <h6 class="mb-0">Jhon Doe</h6>
-                                        <small>15 minutes ago</small>
-                                    </div>
-                                    <span>Short message goes here...</span>
-                                </div>
-                            </div>
+
+
+
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-6 col-xl-4">
@@ -223,58 +231,24 @@
                     <div class="col-sm-12 col-md-6 col-xl-4">
                         <div class="h-100 bg-secondary rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
-                                <h6 class="mb-0">To Do List</h6>
-                                <a href="">Show All</a>
+                                <h6 class="mb-0">Client List</h6>
+                                <a href="{% url 'view_suppliers' %}">Show All</a>
                             </div>
-                            <div class="d-flex mb-2">
-                                <input class="form-control bg-dark border-0" type="text" placeholder="Enter task">
-                                <button type="button" class="btn btn-primary ms-2">Add</button>
-                            </div>
+{#                            <div class="d-flex mb-2">#}
+{#                                <input class="form-control bg-dark border-0" type="text" placeholder="Enter task">#}
+{#                                <button type="button" class="btn btn-primary ms-2">Add</button>#}
+{#                            </div>#}
+                            {% for customer in customers %}
                             <div class="d-flex align-items-center border-bottom py-2">
                                 <input class="form-check-input m-0" type="checkbox">
                                 <div class="w-100 ms-3">
                                     <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span>Short task goes here...</span>
+                                        <span>{{ customer.name }}.</span>
                                         <button class="btn btn-sm"><i class="fa fa-times"></i></button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span>Short task goes here...</span>
-                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox" checked>
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span><del>Short task goes here...</del></span>
-                                        <button class="btn btn-sm text-primary"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center border-bottom py-2">
-                                <input class="form-check-input m-0" type="checkbox">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span>Short task goes here...</span>
-                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-center pt-2">
-                                <input class="form-check-input m-0" type="checkbox">
-                                <div class="w-100 ms-3">
-                                    <div class="d-flex w-100 align-items-center justify-content-between">
-                                        <span>Short task goes here...</span>
-                                        <button class="btn btn-sm"><i class="fa fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
