@@ -1,0 +1,55 @@
+{% extends 'layout/master.html' %}
+{% load humanize %}
+
+{% block title %}
+    {{ product.name }}
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid position-relative d-flex p-0">
+     <div class="content">
+    <div class="container-fluid pt-4 px-4">
+        <div class="row justify-content-center">
+            <div class="col-sm-5">
+
+                {% include 'alerts.html' %}
+
+                <div class="card bg-secondary rounded h-100 p-4">
+                    {% if product.profile %}
+                        <img src="{{ product.profile.url }}" height="300" width="300" alt="">
+                    {% endif %}
+                    <div class="card-body">
+                        <h2 class="card-title">{{ product.productName }}</h2>
+                        <p class="card-text">Ksh {{ product.productPrice | intcomma }}</p>
+                        <p class="card-text">Category {{ product.productCategory }}</p>
+                         <p class="card-text">
+                        Added {{ product.created_at | naturaltime }}</p>
+                        {#{# add, change, view, delete #}
+
+                        {% if perms.main_app.delete_employee %}
+                            <a href="{% url 'delete_product' product.id %}" class="btn btn-danger
+                            w-100">Delete</a>
+                        {% endif %}
+
+                        {% if perms.main_app.change_employee %}
+                            <a href="{% url 'update_products' product.id %}" class="btn btn-info w-100
+                            mt-3">Update</a>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+     </div>
+</div>
+
+
+{% endblock %}
+
+{# view, add, delete, change#}
+
+
+

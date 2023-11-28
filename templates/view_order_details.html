@@ -1,0 +1,45 @@
+{% extends "layout/master.html" %}
+{% load humanize %}
+
+{% block title %}
+    Order Details
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid position-relative d-flex p-0">
+     <div class="content">
+      <div class="container-fluid pt-4 px-4">
+     <div class="col-sm-12 col-xl-9">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Order Details</h6>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Order</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Subtotal</th>
+                                        <th scope="col">Created_at</th>
+                                        <th scope="col">Updated_at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for order_detail in order_details %}
+                                    <tr>
+                                        <td>{{ order_detail.order }}</td>
+                                        <td>{{ order_detail.product }}</td>
+                                        <td>{{ order_detail.quantity }}</td>
+                                        <td>{{ order_detail.subtotal }}</td>
+                                        <td>{{ order_detail.created_at }}</td>
+                                        <td>{{ order_detail.updated_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+      </div>
+     </div>
+    </div>
+{% endblock %}

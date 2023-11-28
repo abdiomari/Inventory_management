@@ -1,0 +1,22 @@
+Inventory
+
+InventoryID - uid - integer
+QuantityAvailable - integer
+MinimumStockLevel - integer
+MaxStockLevel - integer
+ReorderPoint - integer
+
+
+Product
+
+ProductID - uID
+ProductCode- varchar
+Barcode - varchar
+ProductName - varchar
+ProductDescription - varchar
+ProductCategory - varchar
+
+Order
+
+orderID
+OrderDetail

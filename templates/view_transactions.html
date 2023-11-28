@@ -1,0 +1,48 @@
+{% extends "layout/master.html" %}
+{% load humanize %}
+
+{% block title %}
+    All Transactions
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid position-relative d-flex p-0">
+     <div class="content">
+      <div class="container-fluid pt-4 px-4">
+     <div class="col-sm-12 col-xl-9">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">All Transactions</h6>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Transaction Type</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Amount</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Created_at</th>
+                                        <th scope="col">Updated_at</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for transaction in transactions %}
+                                    <tr>
+                                        <td>{{ transaction.transaction_id }}</td>
+                                        <td>{{ transaction.product }}</td>
+                                        <td>{{ transaction.transaction_type }}</td>
+                                        <td>{{ transaction.quantity }}</td>
+                                        <td>{{ transaction.amount }}</td>
+                                        <td>{{ transaction.date }}</td>
+                                        <td>{{ transaction.created_at }}</td>
+                                        <td>{{ transaction.updated_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+      </div>
+     </div>
+    </div>
+{% endblock %}
