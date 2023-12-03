@@ -2,6 +2,7 @@ import os
 import uuid
 
 from django.db import models
+from django.db.models import Sum
 
 # Create your models here.
 
@@ -68,24 +69,19 @@ class Customer(models.Model):
 
 
 class Transaction(models.Model):
-    Transaction_types = [
-        ('sales', 'sales'),
-        ('purchases', 'purchases'),
+    TRANSACTION_TYPES = [
+        ('sales', 'Sales'),
+        ('purchases', 'Purchases'),
     ]
 
     transaction_id = models.AutoField(primary_key=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    transaction_type = models.CharField(max_length=20, choices=Transaction_types)
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
     quantity = models.PositiveIntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True)
     date = models.DateTimeField(auto_now_add=True)
     created_at = models.DateTimeField(auto_now_add=True, null=True)  # Once during creation
     updated_at = models.DateTimeField(auto_now=True, null=True)  # Every time an update happens
-
-    def __str__(self):
-        return (f"Transaction ID: {self.transaction_id}, Product{self.product}, "
-                f"Type: {self.transaction_type}, Quantity: {self.quantity} ,Date: {self.date}")
-
 
 # Orders
 class Order(models.Model):

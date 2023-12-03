@@ -2,8 +2,10 @@ from django.contrib import admin
 from inventory_app.models import (Transaction, Product, Category, Order, OrderDetail, Customer,
                                   Supplier, ProfitAndLoss)
 
-
 # Register your models here.
+admin.site.site_header = "Bonita IMS"
+admin.site.index_title = "Bonita"
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

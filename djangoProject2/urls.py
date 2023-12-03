@@ -20,6 +20,7 @@ from django.urls import path
 
 from djangoProject2 import settings
 from inventory_app import views
+from inventory_app.views import generate_excel
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,8 +30,8 @@ urlpatterns = [
     path('signout', views.signout, name="signout"),
     path('signup', views.signup, name='signup'),
 
-    path('sales/', views.sales, name='sales'),
-    path('purchases/', views.purchases, name='purchases'),
+    # path('sales/', views.sales, name='sales'),
+    # path('purchases/', views.purchases, name='purchases'),
 
     path('addCustomer/', views.add_customers, name='add_customer'),
     path('addSupplier/', views.add_supplier, name='add_supplier'),
@@ -52,5 +53,8 @@ urlpatterns = [
     path('addTransactions/', views.add_transactions, name='add_transactions'),
     path('Transactions/', views.view_transactions, name='view_transactions'),
     path('Transactions/', views.view_transactions, name='view_transactions'),
+
+    path('generate-excel/', generate_excel, name='generate_excel'),
+    path('view-excel/', views.display_excel, name='view_excel'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

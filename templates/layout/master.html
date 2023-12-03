@@ -58,6 +58,26 @@
 
     <!-- Template Javascript -->
     <script src="{% static 'app/js/main.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+     <script>
+        $(document).ready(function() {
+            $('#generateExcelButton').click(function() {
+                $.ajax({
+                    url: '/generate-excel/', // Endpoint to trigger excel generation
+                    type: 'GET',
+                    success: function(response) {
+                        // Handle success, e.g., show a message or perform further actions
+                        alert('Excel generated successfully');
+                    },
+                    error: function(error) {
+                        // Handle error, e.g., show an error message
+                        alert('Error generating Excel');
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
