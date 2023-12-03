@@ -1,0 +1,40 @@
+{% extends 'layout/master.html' %}
+
+{% block content %}
+    <div class="container-fluid position-relative d-flex p-0">
+        <div class="content">
+            <div class="container-fluid pt-4 px-4">
+                <div class="col-sm-12 col-xl-9">
+                    <div class="bg-secondary rounded h-100 p-4">
+                        <h6 class="mb-4">View Excel</h6>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <!-- Assuming the first row contains headers -->
+
+                                    <th>Name </th>
+                                    <th>Product </th>
+                                    <th>Price </th>
+                                    <th>Date </th>
+                                    <th>Contact </th>
+                                    <th>Location </th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for row in rows %}
+                                <tr>
+                                    {% for value in row %}
+                                        <td>{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
