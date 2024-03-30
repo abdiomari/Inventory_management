@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-ENTRYPOINT [ "gunicorn", "djangoProject2.wsgi", "-b", "0.0.0.0:8000"]
+ENTRYPOINT [ "gunicorn", "djangoProject2.wsgi"]
